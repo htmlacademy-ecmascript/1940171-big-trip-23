@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Глеб Лузин](https://up.htmlacademy.ru/ecmascript/23/user/1940171).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Беллавин](https://htmlacademy.ru/profile/bellavin).
 
 ---
 
