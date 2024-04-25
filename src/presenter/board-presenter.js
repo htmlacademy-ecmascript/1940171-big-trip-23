@@ -22,6 +22,8 @@ export default class BoardPresenter {
     render(new SortView(),this.boardContainer);
     render(new AddNewPointView(),this.boardContainer);
     render(new EditPointView(),this.boardContainer);
-    render(new PointView(),this.boardContainer);
+    for (let i = 0; i < 3;i++) {
+      render(new PointView(),this.boardContainer);
+    }
   }
 }
