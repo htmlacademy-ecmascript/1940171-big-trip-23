@@ -161,19 +161,17 @@ function createEditPointTemplate() {
 }
 
 export default class EditPointView {
-  getTemplate() {
-    return createEditPointTemplate();
-  }
+  getTemplate = () => createEditPointTemplate();
 
-  getElement() {
+  getElement = () => {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
 
     return this.element;
-  }
+  };
 
-  removeElement() {
+  removeElement = () => {
     this.element = null;
-  }
+  };
 }

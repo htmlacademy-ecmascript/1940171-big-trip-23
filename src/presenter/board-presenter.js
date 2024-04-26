@@ -15,7 +15,7 @@ export default class BoardPresenter {
     this.headerContainer = headerContainer;
   }
 
-  init() {
+  init = () => {
     render(new TripInfoView(), this.headerContainer);
     render(new FilterView(), this.headerContainer);
     render(new NewEventButtonView(), this.headerContainer);
@@ -25,5 +25,5 @@ export default class BoardPresenter {
     for (let i = 0; i < 3;i++) {
       render(new PointView(),this.boardContainer);
     }
-  }
+  };
 }

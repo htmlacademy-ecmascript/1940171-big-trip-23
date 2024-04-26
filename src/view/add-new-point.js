@@ -168,19 +168,17 @@ function createAddNewPointTemplate() {
 }
 
 export default class AddNewPointView {
-  getTemplate() {
-    return createAddNewPointTemplate();
-  }
+  getTemplate = () => createAddNewPointTemplate();
 
-  getElement() {
+  getElement = () => {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
 
     return this.element;
-  }
+  };
 
-  removeElement() {
+  removeElement = () => {
     this.element = null;
-  }
+  };
 }

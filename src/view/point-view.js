@@ -43,19 +43,17 @@ function createPointTemplate() {
 }
 
 export default class PointView {
-  getTemplate() {
-    return createPointTemplate();
-  }
+  getTemplate = () => createPointTemplate();
 
-  getElement() {
+  getElement = () => {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
 
     return this.element;
-  }
+  };
 
-  removeElement() {
+  removeElement = () => {
     this.element = null;
-  }
+  };
 }

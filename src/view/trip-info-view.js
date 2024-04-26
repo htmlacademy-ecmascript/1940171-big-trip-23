@@ -17,19 +17,17 @@ function createTripInfoTemplate() {
 }
 
 export default class TripInfoView {
-  getTemplate() {
-    return createTripInfoTemplate();
-  }
+  getTemplate = () => createTripInfoTemplate();
 
-  getElement() {
+  getElement = () => {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
 
     return this.element;
-  }
+  };
 
-  removeElement() {
+  removeElement = () => {
     this.element = null;
-  }
+  };
 }
