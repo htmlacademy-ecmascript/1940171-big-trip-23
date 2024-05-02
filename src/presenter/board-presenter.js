@@ -20,10 +20,16 @@ export default class BoardPresenter {
     render(new FilterView(), this.headerContainer);
     render(new NewEventButtonView(), this.headerContainer);
     render(new SortView(),this.boardContainer);
-    render(new AddNewPointView(),this.boardContainer);
-    render(new EditPointView(),this.boardContainer);
     for (let i = 0; i < 3;i++) {
-      render(new PointView(),this.boardContainer);
+      if (i === 0) {
+        render(new AddNewPointView(),this.boardContainer);
+      }
+      if (i === 1) {
+        render(new EditPointView(),this.boardContainer);
+      }
+      if (i === 2) {
+        render(new PointView(),this.boardContainer);
+      }
     }
   };
 }
