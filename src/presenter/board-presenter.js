@@ -6,9 +6,11 @@ import {render} from '../render.js';
 import FilterView from '../view/filter-view.js';
 import TripInfoView from '../view/trip-info-view.js';
 import NewEventButtonView from '../view/new-event-button-view.js';
+import EventsListView from '../view/events-list-view.js';
+
 
 export default class BoardPresenter {
-
+  eventListComponent = new EventsListView();
 
   constructor({boardContainer,headerContainer}) {
     this.boardContainer = boardContainer;
@@ -20,16 +22,17 @@ export default class BoardPresenter {
     render(new FilterView(), this.headerContainer);
     render(new NewEventButtonView(), this.headerContainer);
     render(new SortView(),this.boardContainer);
-    for (let i = 0; i < 3;i++) {
+    render(this.eventListComponent,this.boardContainer);
+    for (let i = 0; i < 5;i++) {
       if (i === 0) {
-        render(new AddNewPointView(),this.boardContainer);
+        render(new AddNewPointView(), this.eventListComponent.getElement());
+        continue;
       }
       if (i === 1) {
-        render(new EditPointView(),this.boardContainer);
+        render(new EditPointView(), this.eventListComponent.getElement());
+        continue;
       }
-      if (i === 2) {
-        render(new PointView(),this.boardContainer);
-      }
+      render(new PointView(), this.eventListComponent.getElement());
     }
   };
 }
