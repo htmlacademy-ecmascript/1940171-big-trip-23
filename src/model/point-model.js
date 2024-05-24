@@ -3,19 +3,19 @@ import { destination } from '../mock/destination';
 import { offers } from '../mock/offers';
 
 export default class PointModel {
-  constructor() {
-    this.points = [];
-    this.destination = [];
-    this.offers = [];
+  #points = points;
+  #destination = destination;
+  #offers = offers;
+
+  get points () {
+    return this.#points;
   }
 
-  init = () => {
-    this.points = points;
-    this.destination = destination;
-    this.offers = offers;
-  };
+  get destination () {
+    return this.#destination;
+  }
 
-  getPoints = () => this.points;
-  getDestination = () => this.destination;
-  getOffers = () => this.offers;
+  get offers () {
+    return this.#offers;
+  }
 }

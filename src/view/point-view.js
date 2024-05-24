@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeTaskDueDate } from '../utils.js';
 
 const DATE_FORMAT = 'HH:MM';
@@ -47,23 +47,24 @@ function createPointTemplate(point, destination) {
   `);
 }
 
-export default class PointView {
-  constructor(point, destination) {
-    this.point = point;
-    this.destination = destination;
+export default class PointView extends AbstractView {
+  #destination = null;
+  #point = null;
+  #handleEditClick = null;
+  constructor({point, destination, onEditClick}) {
+    super();
+    this.#point = point;
+    this.#destination = destination;
+    this.#handleEditClick = onEditClick;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
   }
 
-  getTemplate = () => createPointTemplate(this.point, this.destination);
+  get template () {
+    return createPointTemplate(this.#point, this.#destination);
+  }
 
-  getElement = () => {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  };
-
-  removeElement = () => {
-    this.element = null;
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleEditClick();
   };
 }

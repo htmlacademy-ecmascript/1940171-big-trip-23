@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeTaskDueDate } from '../utils.js';
 import { EVENT_TYPE } from '../const.js';
 
@@ -109,24 +109,27 @@ ${destination.pictures.map((item)=>`<img class="event__photo" src="${item.src}" 
   );
 }
 
-export default class EditPointView {
-  constructor(point, destination, offers) {
-    this.point = point;
-    this.destination = destination;
-    this.offers = offers;
+export default class EditPointView extends AbstractView{
+  #handleFormSubmit = null;
+  #point = null;
+  #destination = null;
+  #offers = null;
+  constructor({point, destination, offers, onFormSubmit}) {
+    super();
+    this.#point = point;
+    this.#destination = destination;
+    this.#offers = offers;
+    this.#handleFormSubmit = onFormSubmit;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formSubmitHandler);
   }
 
-  getTemplate = () => createEditPointTemplate(this.point, this.destination, this.offers);
+  get template () {
+    return createEditPointTemplate(this.#point, this.#destination, this.#offers);
+  }
 
-  getElement = () => {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  };
-
-  removeElement = () => {
-    this.element = null;
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
   };
 }
