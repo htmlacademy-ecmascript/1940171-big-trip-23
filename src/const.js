@@ -7,7 +7,14 @@ const EVENT_TYPE = [
   'flight',
   'check-in',
   'sightseeing',
-  'restaurant'
+  'restaurant',
 ];
 
-export {EVENT_TYPE};
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+export { EVENT_TYPE, FilterType };
