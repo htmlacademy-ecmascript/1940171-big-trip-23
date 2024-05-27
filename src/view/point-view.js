@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizeTaskDueDate } from '../utils.js';
+import { humanizeTaskDueDate } from '../utils/utils.js';
 
 const DATE_FORMAT = 'HH:MM';
 

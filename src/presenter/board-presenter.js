@@ -3,16 +3,16 @@ import SortView from '../view/sort-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import PointView from '../view/point-view.js';
 import { render, replace } from '../framework/render.js';
-import FilterView from '../view/filter-view.js';
-import TripInfoView from '../view/trip-info-view.js';
-import NewEventButtonView from '../view/new-event-button-view.js';
 import EventsListView from '../view/events-list-view.js';
+import { isEmpty } from '../utils/utils.js';
+import ListEmptyView from '../view/list-empty.js';
 
 export default class BoardPresenter {
   #eventListComponent = new EventsListView();
   #boardContainer = null;
   #headerContainer = null;
   #pointModel = null;
+
   constructor({ boardContainer, headerContainer, pointModel }) {
     this.#boardContainer = boardContainer;
     this.#headerContainer = headerContainer;
@@ -23,15 +23,16 @@ export default class BoardPresenter {
     const points = this.#pointModel.points;
     const destination = this.#pointModel.destination;
     const offers = this.#pointModel.offers;
-    render(new TripInfoView(), this.#headerContainer);
-    render(new FilterView(), this.#headerContainer);
-    render(new NewEventButtonView(), this.#headerContainer);
-    render(new SortView(), this.#boardContainer);
-    render(this.#eventListComponent, this.#boardContainer);
     // render(new AddNewPointView(), this.#eventListComponent.element);
-    points.forEach((point) => {
-      this.#renderPoint(point, destination, offers);
-    });
+    if (isEmpty(points)) {
+      render(new ListEmptyView(), this.#boardContainer);
+    } else {
+      render(new SortView(), this.#boardContainer);
+      render(this.#eventListComponent, this.#boardContainer);
+      points.forEach((point) => {
+        this.#renderPoint(point, destination, offers);
+      });
+    }
   };
 
   #renderPoint(point, destination, offers) {
