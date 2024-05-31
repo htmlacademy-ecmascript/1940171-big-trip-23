@@ -12,7 +12,6 @@ const pointModel = new PointModel();
 
 const boardPresenter = new BoardPresenter({
   boardContainer: tripEventsElement,
-  headerContainer: tripMainElement,
   pointModel,
 });
 const filters = generateFilter(pointModel.points);
