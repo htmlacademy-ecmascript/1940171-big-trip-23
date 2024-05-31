@@ -1,6 +1,8 @@
+import { nanoid } from 'nanoid';
+
 export const points = [
   {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808c',
+    id: nanoid(),
     basePrice: 1100,
     dateFrom: '2025-07-09T12:55:56.845Z',
     dateTo: '2025-07-11T13:22:13.375Z',
@@ -10,7 +12,7 @@ export const points = [
     type: 'taxi',
   },
   {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808c',
+    id: nanoid(),
     basePrice: 500,
     dateFrom: '2019-07-10T10:55:56.845Z',
     dateTo: '2019-07-11T11:11:13.375Z',
@@ -20,7 +22,7 @@ export const points = [
     type: 'train',
   },
   {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808c',
+    id: nanoid(),
     basePrice: 2000,
     dateFrom: '2019-07-10T16:55:56.845Z',
     dateTo: '2019-07-11T13:22:13.375Z',
