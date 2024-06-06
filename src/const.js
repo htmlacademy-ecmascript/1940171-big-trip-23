@@ -17,4 +17,18 @@ const FilterType = {
   PAST: 'past',
 };
 
-export { EVENT_TYPE, FilterType };
+
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offers'
+};
+
+const DISABLED_SORT_TYPES = [
+  SortType.EVENT,
+  SortType.OFFERS
+];
+
+export { EVENT_TYPE, FilterType, SortType, DISABLED_SORT_TYPES};
