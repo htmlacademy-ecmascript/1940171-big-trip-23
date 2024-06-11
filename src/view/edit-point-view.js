@@ -1,6 +1,9 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeTaskDueDate } from '../utils/utils.js';
 import { EVENT_TYPE } from '../const.js';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 const DATE_FORMAT = 'DD/MM/YY HH:MM';
 
@@ -47,10 +50,10 @@ function createEditPointTemplate(point, destination, offers) {
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeTaskDueDate(dateFrom, DATE_FORMAT)}">
+                    <input class="event__input  event__input--time-start" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeTaskDueDate(dateFrom, DATE_FORMAT)}">
                     &mdash;
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeTaskDueDate(dateTo, DATE_FORMAT)}">
+                    <input class="event__input  event__input--time-end" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeTaskDueDate(dateTo, DATE_FORMAT)}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -118,6 +121,7 @@ export default class EditPointView extends AbstractStatefulView {
   #handleFormRollup = null;
   #destination = null;
   #offers = null;
+  #datepicker = null;
   constructor({point, destination, offers, onFormSubmit, onRollupClick}) {
     super();
     this._setState(EditPointView.parsePointToState(point));
@@ -132,17 +136,40 @@ export default class EditPointView extends AbstractStatefulView {
     return createEditPointTemplate(this._state, this.#destination, this.#offers);
   }
 
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datepicker) {
+      this.#datepicker.destroy();
+      this.#datepicker = null;
+    }
+  }
+
   reset(point) {
     this.updateElement(
       EditPointView.parsePointToState(point),
     );
   }
 
+  #dueStartDateChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateFrom: userDate,
+    });
+  };
+
+  #dueEndDateChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateTo: userDate,
+    });
+  };
+
   _restoreHandlers() {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#eventDestinationHandler);
+    this.#setDatepickerStart();
+    this.#setDatepickerEnd();
   }
 
   #eventTypeHandler = (evt) => {
@@ -169,6 +196,36 @@ export default class EditPointView extends AbstractStatefulView {
     evt.preventDefault();
     this.#handleFormSubmit();
   };
+
+  #setDatepickerStart() {
+    this.#datepicker = flatpickr(
+      this.element.querySelector('.event__input--time-start'),
+      {
+        dateFormat: 'd/m/y h:i',
+        enableTime: true,
+        // eslint-disable-next-line camelcase
+        time_24hr: true,
+        defaultDate: this._state.dateFrom,
+        onChange: this.#dueStartDateChangeHandler,
+      },
+    );
+
+  }
+
+  #setDatepickerEnd() {
+    this.#datepicker = flatpickr(
+      this.element.querySelector('.event__input--time-end'),
+      {
+        dateFormat: 'd/m/y h:i',
+        enableTime: true,
+        // eslint-disable-next-line camelcase
+        time_24hr: true,
+        defaultDate: this._state.dateTo,
+        onChange: this.#dueEndDateChangeHandler,
+      },
+    );
+
+  }
 
   static parsePointToState(point) {
     return {...point};
