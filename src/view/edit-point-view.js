@@ -3,8 +3,6 @@ import { humanizeTaskDueDate } from '../utils/utils.js';
 import { EVENT_TYPE } from '../const.js';
 import flatpickr from 'flatpickr';
 
-import 'flatpickr/dist/flatpickr.min.css';
-
 const DATE_FORMAT = 'DD/MM/YY HH:MM';
 
 function createEditPointTemplate(point, destination, offers) {
@@ -117,18 +115,21 @@ ${destination.pictures.map((item)=>`<img class="event__photo" src="${item.src}" 
 }
 
 export default class EditPointView extends AbstractStatefulView {
+  #handleDeleteClick = null;
   #handleFormSubmit = null;
   #handleFormRollup = null;
   #destination = null;
   #offers = null;
-  #datepicker = null;
-  constructor({point, destination, offers, onFormSubmit, onRollupClick}) {
+  #datepickerStart = null;
+  #datepickerEnd = null;
+  constructor({point, destination, offers, onFormSubmit, onRollupClick, onDeleteClick}) {
     super();
     this._setState(EditPointView.parsePointToState(point));
     this.#destination = destination;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormRollup = onRollupClick;
+    this.#handleDeleteClick = onDeleteClick;
     this._restoreHandlers();
   }
 
@@ -139,9 +140,13 @@ export default class EditPointView extends AbstractStatefulView {
   removeElement() {
     super.removeElement();
 
-    if (this.#datepicker) {
-      this.#datepicker.destroy();
-      this.#datepicker = null;
+    if (this.#datepickerStart) {
+      this.#datepickerStart.destroy();
+      this.#datepickerStart = null;
+    }
+    if (this.#datepickerEnd) {
+      this.#datepickerEnd.destroy();
+      this.#datepickerEnd = null;
     }
   }
 
@@ -168,6 +173,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#eventDestinationHandler);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.#setDatepickerStart();
     this.#setDatepickerEnd();
   }
@@ -187,6 +193,11 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditPointView.parseStateToPoint(this._state));
+  };
+
   #rollupHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormRollup();
@@ -194,11 +205,11 @@ export default class EditPointView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
   };
 
   #setDatepickerStart() {
-    this.#datepicker = flatpickr(
+    this.#datepickerStart = flatpickr(
       this.element.querySelector('.event__input--time-start'),
       {
         dateFormat: 'd/m/y h:i',
@@ -213,7 +224,7 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   #setDatepickerEnd() {
-    this.#datepicker = flatpickr(
+    this.#datepickerEnd = flatpickr(
       this.element.querySelector('.event__input--time-end'),
       {
         dateFormat: 'd/m/y h:i',

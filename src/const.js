@@ -23,7 +23,7 @@ const SortType = {
   EVENT: 'event',
   TIME: 'time',
   PRICE: 'price',
-  OFFER: 'offers'
+  OFFER: 'offers',
 };
 
 const DISABLED_SORT_TYPES = [
@@ -31,4 +31,16 @@ const DISABLED_SORT_TYPES = [
   SortType.OFFERS
 ];
 
-export { EVENT_TYPE, FilterType, SortType, DISABLED_SORT_TYPES};
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export { EVENT_TYPE, FilterType, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType};
