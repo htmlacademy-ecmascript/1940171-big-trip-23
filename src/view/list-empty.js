@@ -11,7 +11,7 @@ const NoPointsTextType = {
 function createListEmptyTemplate(filterType) {
   const noPointTextValue = NoPointsTextType[filterType];
   return `
-  ${noPointTextValue}
+  <p class="trip-events__msg">${noPointTextValue}</p>
   `;
 }
 

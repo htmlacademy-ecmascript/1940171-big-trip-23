@@ -1,10 +1,10 @@
 import SortView from '../view/sort-view.js';
-// import AddNewPointView from '../view/add-new-point.js';
 import { render, remove} from '../framework/render.js';
 import EventsListView from '../view/events-list-view.js';
 import { isEmpty } from '../utils/utils.js';
 import ListEmptyView from '../view/list-empty.js';
 import PointPresenter from './point-presenter.js';
+import NewPointPresenter from './new-point-presenter.js';
 import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
 import {sortDay, sortTime, sortPrice} from '../utils/sort.js';
 import {filter} from '../utils/filter.js';
@@ -13,6 +13,7 @@ export default class BoardPresenter {
   #eventListComponent = new EventsListView();
   #emptyListComponent = null;
   #boardContainer = null;
+  #newPointPresenter = null;
   #pointModel = null;
   #pointPresenters = new Map();
   #sortComponent = null;
@@ -20,10 +21,16 @@ export default class BoardPresenter {
   #filterModel = null;
   #filterType = FilterType.EVERYTHING;
 
-  constructor({ boardContainer, pointModel, filterModel}) {
+  constructor({ boardContainer, pointModel, filterModel, onNewPointDestroy}) {
     this.#boardContainer = boardContainer;
     this.#pointModel = pointModel;
     this.#filterModel = filterModel;
+    this.#newPointPresenter = new NewPointPresenter({
+      pointModel: this.#pointModel,
+      pointListContainer: this.#boardContainer,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy,
+    });
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -55,9 +62,14 @@ export default class BoardPresenter {
 
 
   init = () => {
-    // render(new AddNewPointView(), this.#eventListComponent.element);
     this.#renderBoard();
   };
+
+  createPoint() {
+    this.#currentSortType = SortType.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newPointPresenter.init();
+  }
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
@@ -90,6 +102,7 @@ export default class BoardPresenter {
   };
 
   #handleModeChange = () => {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
@@ -135,6 +148,7 @@ export default class BoardPresenter {
   }
 
   #clearBoard({resetSortType = false} = {}) {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
     remove(this.#sortComponent);
