@@ -8,7 +8,7 @@ export const points = [
     dateTo: '2025-07-11T13:22:13.375Z',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
     isFavorite: false,
-    offers: ['1', '2', '3', '4'],
+    offers: ['1', '3'],
     type: 'taxi',
   },
   {
@@ -18,7 +18,7 @@ export const points = [
     dateTo: '2019-07-11T11:11:13.375Z',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e05',
     isFavorite: true,
-    offers: ['1', '2', '3'],
+    offers: ['1'],
     type: 'train',
   },
   {
@@ -28,7 +28,7 @@ export const points = [
     dateTo: '2019-07-11T13:22:13.375Z',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e06',
     isFavorite: true,
-    offers: [],
+    offers: ['3'],
     type: 'flight',
   },
 ];

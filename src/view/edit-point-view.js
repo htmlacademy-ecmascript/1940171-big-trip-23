@@ -2,7 +2,6 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeTaskDueDate } from '../utils/utils.js';
 import { EVENT_TYPE } from '../const.js';
 import flatpickr from 'flatpickr';
-import he from 'he';
 
 const DATE_FORMAT = 'DD/MM/YY HH:MM';
 
@@ -11,7 +10,6 @@ function createEditPointTemplate(point, destination, offers) {
   const currentDestination = destination.find((destinations) => destinations.id === point.destination);
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   //const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
-
   return (`
   <li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -43,7 +41,7 @@ function createEditPointTemplate(point, destination, offers) {
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentDestination.name}" list="destination-list-1">
                     <datalist id="destination-list-1">
-                      ${he.encode(destination.map((item)=>`<option value="${item.name}"></option>`).join(''))}
+                      ${destination.map((item)=>`<option value="${item.name}"></option>`).join('')}
                     </datalist>
                   </div>
 
@@ -73,7 +71,7 @@ function createEditPointTemplate(point, destination, offers) {
                   ${typeOffers.length ? `<section class="event__section  event__section--offers">
                   <h3 class="event__section-title  event__section-title--offers">Offers</h3>
                   <div class="event__available-offers">
-                  ${createOffers(typeOffers)}
+                  ${createOffers(typeOffers, point)}
                   </div>
                 </section>` : ''}
 
@@ -84,12 +82,12 @@ function createEditPointTemplate(point, destination, offers) {
   `);
 }
 
-function createOffers (pointOffers) {
+function createOffers (pointOffers, point) {
   return pointOffers.map((typeOffer) => (
 
     `<div class="event__offer-selector">
-                    <input class="event__offer-checkbox  visually-hidden" id="${typeOffer.id}" type="checkbox" name="event-offer-luggage" checked>
-                    <label class="event__offer-label" for="event-offer-luggage-1">
+                    <input class="event__offer-checkbox  visually-hidden" id="${typeOffer.id}" type="checkbox" name="event-offer-luggage" ${point.offers.includes(typeOffer.id) ? 'checked' : ''}>
+                    <label class="event__offer-label" for="${typeOffer.id}">
                       <span class="event__offer-title">${typeOffer.title}</span>
                       &plus;&euro;&nbsp;
                       <span class="event__offer-price">${typeOffer.price}</span>
@@ -177,9 +175,6 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__input--price').addEventListener('change', this.#eventPriceHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#formOfferChangeHandler);
-    // this.element.querySelectorAll('.event__offer-selector').forEach((item)=>{
-    //   item.addEventListener('change', this.#formOfferClickHandler);
-    // });
     this.#setDatepickerStart();
     this.#setDatepickerEnd();
   }
@@ -198,8 +193,7 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
-  #formOfferChangeHandler = (evt) => {
-    evt.target.checked = !evt.target.checked;
+  #formOfferChangeHandler = () => {
     const checkedOffers = [
       ...this.element.querySelectorAll('.event__offer-checkbox'),
     ]
@@ -212,10 +206,10 @@ export default class EditPointView extends AbstractStatefulView {
 
   #eventDestinationHandler = (evt) => {
     evt.preventDefault();
-    if (evt.target.value !== this.#destination.find((destination) => evt.target.value === destination.name)) {
+    const selectDestination = this.#destination.find((destination) => evt.target.value === destination.name);
+    if (selectDestination === undefined) {
       return;
     }
-    const selectDestination = this.#destination.find((destination) => evt.target.value === destination.name);
     this.updateElement({
       destination: selectDestination.id
     });
