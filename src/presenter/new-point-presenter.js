@@ -11,8 +11,7 @@ export default class NewPointPresenter {
   #pointEditComponent = null;
   #pointModel = null;
   #newPoint = {
-    id: nanoid(),
-    basePrice: 1100,
+    basePrice: 0,
     dateFrom: '2025-07-09T12:55:56.845Z',
     dateTo: '2025-07-11T13:22:13.375Z',
     destination: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
@@ -63,7 +62,7 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      {...point},
+      { id: nanoid(), ...point},
     );
     this.destroy();
   };
