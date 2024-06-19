@@ -12,7 +12,7 @@ import DestinationsApiService from './destinations-api-service';
 import DestinationsModel from './model/destinations-model';
 import OffersModel from './model/offers-model';
 
-const AUTHORIZATION = 'Basic oNch8eSu6suAsrS100';
+const AUTHORIZATION = 'Basic oNch8eSu6sssAsrS100';
 const END_POINT = 'https://23.objects.htmlacademy.pro/big-trip';
 
 const tripMainElement = document.querySelector('.trip-main');
