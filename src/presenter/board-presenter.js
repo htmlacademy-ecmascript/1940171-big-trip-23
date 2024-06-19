@@ -1,5 +1,5 @@
 import SortView from '../view/sort-view.js';
-import { render, remove} from '../framework/render.js';
+import { render, remove, RenderPosition} from '../framework/render.js';
 import EventsListView from '../view/events-list-view.js';
 import { isEmpty } from '../utils/utils.js';
 import ListEmptyView from '../view/list-empty.js';
@@ -8,9 +8,11 @@ import NewPointPresenter from './new-point-presenter.js';
 import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
 import {sortDay, sortTime, sortPrice} from '../utils/sort.js';
 import {filter} from '../utils/filter.js';
+import LoadingView from '../view/loading-view.js';
 
 export default class BoardPresenter {
   #eventListComponent = new EventsListView();
+  #loadingComponent = new LoadingView();
   #emptyListComponent = null;
   #boardContainer = null;
   #newPointPresenter = null;
@@ -20,6 +22,7 @@ export default class BoardPresenter {
   #currentSortType = SortType.DAY;
   #filterModel = null;
   #filterType = FilterType.EVERYTHING;
+  #isLoading = true;
 
   constructor({ boardContainer, pointModel, filterModel, onNewPointDestroy}) {
     this.#boardContainer = boardContainer;
@@ -98,6 +101,11 @@ export default class BoardPresenter {
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
+        break;
     }
   };
 
@@ -117,6 +125,10 @@ export default class BoardPresenter {
   #renderEventList() {
     render(this.#eventListComponent, this.#boardContainer);
     this.#renderPoints();
+  }
+
+  #renderLoading() {
+    render(this.#loadingComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
   }
 
   #renderPoints() {
@@ -170,6 +182,10 @@ export default class BoardPresenter {
   }
 
   #renderBoard() {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     if (isEmpty(this.points)) {
       this.#renderEmptyList();
       return;

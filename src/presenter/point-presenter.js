@@ -27,8 +27,8 @@ export default class PointPresenter {
 
   init(point, destination = this.#destination, offers = this.#offers) {
     this.#point = point;
-    this.#destination = destination;
-    this.#offers = offers;
+    this.#destination = destination.destinations;
+    this.#offers = offers.offers;
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
