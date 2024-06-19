@@ -3,13 +3,13 @@ import { humanizeTaskDueDate } from '../utils/utils.js';
 import { EVENT_TYPE } from '../const.js';
 import flatpickr from 'flatpickr';
 
+
 const DATE_FORMAT = 'DD/MM/YY HH:MM';
 
 function createEditPointTemplate(point, destination, offers, isDisabled, isSaving, isDeleting) {
   const {type, basePrice, dateFrom, dateTo,} = point;
   const currentDestination = destination.find((destinations) => destinations.id === point.destination);
   const typeOffers = offers.find((offer) => offer.type === type).offers;
-  //const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
   return (`
   <li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -58,7 +58,7 @@ function createEditPointTemplate(point, destination, offers, isDisabled, isSavin
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}" pattern="^[0-9]+$">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}" max="10000" min="1" pattern="^[0-9]+$">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? ' disabled' : ''}> ${isSaving ? 'Saving...' : 'Save'}</button>
