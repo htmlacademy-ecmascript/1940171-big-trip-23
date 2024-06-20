@@ -7,7 +7,6 @@ export default class NewPointPresenter {
   #pointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
-  #handleRollupClick = null;
   #pointEditComponent = null;
   #pointModel = null;
   #newPoint = {
@@ -20,11 +19,10 @@ export default class NewPointPresenter {
     type: 'taxi',
   };
 
-  constructor({pointListContainer, onDataChange, onDestroy, pointModel, handleRollupClick}) {
+  constructor({pointListContainer, onDataChange, onDestroy, pointModel}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
-    this.#handleRollupClick = handleRollupClick;
     this.#pointModel = pointModel;
   }
 
@@ -37,6 +35,7 @@ export default class NewPointPresenter {
       destination: this.#pointModel.destination.destinations,
       offers: this.#pointModel.offers.offers,
       onFormSubmit: this.#handleFormSubmit,
+      onRollupClick: this.#handlerFormRollup,
       onDeleteClick: this.#handleDeleteClick
     });
 
@@ -76,6 +75,10 @@ export default class NewPointPresenter {
 
     this.#pointEditComponent.shake(resetFormState);
   }
+
+  #handlerFormRollup = () => {
+    this.destroy();
+  };
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
