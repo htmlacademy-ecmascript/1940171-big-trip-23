@@ -14,7 +14,7 @@ export default class NewPointPresenter {
     basePrice: 0,
     dateFrom: '2025-07-09T12:55:56.845Z',
     dateTo: '2025-07-11T13:22:13.375Z',
-    destination: '7c8486a2-3742-4e76-b1b4-654ba53ffe8b',
+    destination: '05686be0-8054-44f6-b0ec-3d14611fea5c',
     isFavorite: false,
     offers: [],
     type: 'taxi',
