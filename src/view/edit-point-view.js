@@ -2,7 +2,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeTaskDueDate } from '../utils/utils.js';
 import { EVENT_TYPE } from '../const.js';
 import flatpickr from 'flatpickr';
-
+import he from 'he';
 
 const DATE_FORMAT = 'DD/MM/YY HH:MM';
 
@@ -39,7 +39,7 @@ function createEditPointTemplate(point, destination, offers, isDisabled, isSavin
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${type}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentDestination.name}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(currentDestination?.name ?? '')}" list="destination-list-1"  ${isDisabled ? ' disabled' : ''}>
                     <datalist id="destination-list-1">
                       ${destination.map((item)=>`<option value="${item.name}"></option>`).join('')}
                     </datalist>
@@ -47,10 +47,10 @@ function createEditPointTemplate(point, destination, offers, isDisabled, isSavin
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time-start" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeTaskDueDate(dateFrom, DATE_FORMAT)}">
+                    <input class="event__input  event__input--time-start" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeTaskDueDate(dateFrom, DATE_FORMAT)}"  ${isDisabled ? ' disabled' : ''}>
                     &mdash;
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time-end" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeTaskDueDate(dateTo, DATE_FORMAT)}">
+                    <input class="event__input  event__input--time-end" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeTaskDueDate(dateTo, DATE_FORMAT)}"  ${isDisabled ? ' disabled' : ''}>
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -58,7 +58,7 @@ function createEditPointTemplate(point, destination, offers, isDisabled, isSavin
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}" max="10000" min="1" pattern="^[0-9]+$">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}" max="100000" min="1" pattern="^[0-9]+$">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? ' disabled' : ''}> ${isSaving ? 'Saving...' : 'Save'}</button>

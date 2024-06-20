@@ -1,7 +1,8 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeTaskDueDate } from '../utils/utils.js';
 import { getDateDifference } from '../utils/utils.js';
-const DATE_FORMAT_TIME = 'HH:MM';
+import he from 'he';
+const DATE_FORMAT_TIME = 'HH:mm';
 const DATE_FORMAT_DAY = 'MMM DD';
 
 function createPointTemplate(point, destination, offers) {
@@ -27,7 +28,7 @@ function createPointTemplate(point, destination, offers) {
                   <p class="event__duration">${getDateDifference(dateFrom, dateTo)}</p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+                  &euro;&nbsp;<span class="event__price-value">${he.encode(String(basePrice))}</span>
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">

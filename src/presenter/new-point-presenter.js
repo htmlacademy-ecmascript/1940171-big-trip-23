@@ -7,24 +7,22 @@ export default class NewPointPresenter {
   #pointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
-  #handleRollupClick = null;
   #pointEditComponent = null;
   #pointModel = null;
   #newPoint = {
     basePrice: 0,
     dateFrom: '2025-07-09T12:55:56.845Z',
     dateTo: '2025-07-11T13:22:13.375Z',
-    destination: '7c8486a2-3742-4e76-b1b4-654ba53ffe8b',
+    destination: '05686be0-8054-44f6-b0ec-3d14611fea5c',
     isFavorite: false,
     offers: [],
     type: 'taxi',
   };
 
-  constructor({pointListContainer, onDataChange, onDestroy, pointModel, handleRollupClick}) {
+  constructor({pointListContainer, onDataChange, onDestroy, pointModel}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
-    this.#handleRollupClick = handleRollupClick;
     this.#pointModel = pointModel;
   }
 
@@ -37,6 +35,7 @@ export default class NewPointPresenter {
       destination: this.#pointModel.destination.destinations,
       offers: this.#pointModel.offers.offers,
       onFormSubmit: this.#handleFormSubmit,
+      onRollupClick: this.#handlerFormRollup,
       onDeleteClick: this.#handleDeleteClick
     });
 
@@ -76,6 +75,10 @@ export default class NewPointPresenter {
 
     this.#pointEditComponent.shake(resetFormState);
   }
+
+  #handlerFormRollup = () => {
+    this.destroy();
+  };
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
